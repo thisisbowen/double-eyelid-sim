@@ -1,0 +1,24 @@
+    <!doctype html>
+
+    <title>双眼皮模拟器(测试版)</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <h1>双眼皮模拟器(测试版)</h1>
+    <div>&nbsp;</div>
+    <h3>第一步：请上传一张正脸自拍照片。为了提高成功识别率，请选择不带眼镜、光线充足、且面部清晰的照片。</h3>
+    <div>&nbsp;</div>
+    <h3>第二步：点击"生成照片"，等待一分钟左右，即会看到一张对您有参考价值的术前术后对比图。</h3>
+    <div>&nbsp;</div>
+    <form method=post enctype=multipart/form-data>
+      <p><input type=file name=file>
+         <input type=submit value=生成照片!>
+    </form>
+    <div>&nbsp;</div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <font size="4" color="red"> {{ message }}</font>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div>&nbsp;</div>
+    <small>*本网站不会收集任何用户信息，所有上传的文件照片都会自动删除。</small>

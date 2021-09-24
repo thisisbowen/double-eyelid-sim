@@ -1,0 +1,232 @@
+<!DOCTYPE html><html>
+<head>
+    <title>NetID Single Sign On - CAS &#8211; Central Authentication Service</title>
+    <meta charset="UTF-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/cas/webjars/font-awesome/4.7.0/css/font-awesome.min.css"/><link type="text/css" rel="stylesheet" href="/cas/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css"/><link type="text/css" rel="stylesheet" href="/cas/webjars/lato/0.3.0/css/lato.min.css"/><link rel="stylesheet" href="/cas/css/cas.css"/><link rel="icon" href="/cas/favicon.ico" type="image/x-icon"/><script type="text/javascript" src="/cas/webjars/zxcvbn/4.3.0/zxcvbn.js"></script>
+    <script type="text/javascript" src="/cas/webjars/jquery/3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="/cas/webjars/jquery-ui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/cas/webjars/jquery-cookie/1.4.1-1/jquery.cookie.js"></script>
+    <script src="/cas/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+
+    <script>
+        /*<![CDATA[*/
+        var trackGeoLocation = false;
+        var googleAnalyticsTrackingId = null;
+        if (googleAnalyticsTrackingId != null && googleAnalyticsTrackingId != '') {
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+            ga('create', googleAnalyticsTrackingId, 'auto');
+            ga('send', 'pageview');
+        }
+        /*]]>*/
+    </script>
+</head>
+
+<body id="cas" class="login">
+<!--> <![endif]--><a href="#loginskip" class="accessibility">Skip to Login</a>
+<div id="main">
+
+    <div id="uc-header">
+        <div class="container">
+            <h1 id="uc-identity"> <span id="uc-logo" title="University of Connecticut"> <a href="http://uconn.edu"> <svg version="1.1" class="uc-header-svg" id="uc-logo-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="102.296px" height="20.97px" viewBox="0 0 102.296 20.97" enable-background="new 0 0 102.296 20.97" xml:space="preserve">
+                <g>
+                    <path d="M0,18.744V0.564h4.423v15.962c1.979,0.593,3.459,0.895,4.438,0.906c0.969,0,2.443-0.302,4.423-0.906V0.564h4.423v18.18c-2.601,1.503-5.549,2.255-8.846,2.255C5.558,20.999,2.604,20.247,0,18.744z"></path>
+                    <path d="M21.348,18.756V2.26c2.559-1.496,5.5-2.25,8.821-2.26c3.343,0,6.294,0.753,8.853,2.26v5.149H34.6V4.47c-1.367-0.42-2.841-0.629-4.422-0.629c-1.561,0-3.03,0.21-4.407,0.629v12.026c1.366,0.419,2.835,0.628,4.407,0.628c1.582,0,3.056-0.209,4.422-0.628v-3.763h4.422v6.021c-2.577,1.474-5.525,2.211-8.844,2.211C26.873,20.967,23.931,20.23,21.348,18.756z"></path>
+                    <path d="M42.474,18.756V2.227C45.054,0.753,48.006,0.01,51.327,0c3.323,0,6.273,0.742,8.854,2.228v16.528c-2.578,1.475-5.526,2.211-8.846,2.211C48.011,20.967,45.057,20.23,42.474,18.756z M46.897,16.497c1.411,0.419,2.889,0.628,4.439,0.628c1.538,0,3.012-0.209,4.422-0.628V4.47c-1.388-0.42-2.863-0.629-4.422-0.629c-1.571,0-3.051,0.21-4.439,0.629V16.497L46.897,16.497z"></path>
+                    <path d="M63.408,0.44h4.729l8.796,14.059h0.097V0.44h4.036v19.805h-4.729L67.541,6.202h-0.13v14.043h-4.002L63.408,0.44L63.408,0.44z"></path>
+                    <path d="M84.47,0.44h4.729l8.797,14.059h0.097V0.44h4.036v19.805h-4.729L88.602,6.202h-0.129v14.043H84.47V0.44L84.47,0.44z"></path>
+                </g>
+                </svg> <span class="uc-header-fallback" id="uc-logo-fallback"> <img src="images/uconn.png" alt="UCONN"></span> </a> </span>
+                            <span id="uc-title"> <a href="http://uconn.edu"> <span id="uc-title-universityof"> <svg version="1.1" id="uc-title-universityof-svg" class="uc-sub-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="145.24px" height="12.883px" viewBox="0 0 145.24 12.883" enable-background="new 0 0 145.24 12.883" xml:space="preserve">
+                <g>
+                    <path d="M3.513,9.631c0.468,0.583,1.099,0.874,1.892,0.874s1.42-0.292,1.884-0.874C7.75,9.048,7.981,8.252,7.981,7.243V0.289h2.812v7.044c0,1.827-0.504,3.229-1.515,4.208c-1.009,0.979-2.301,1.469-3.874,1.469s-2.867-0.493-3.883-1.478C0.507,10.546,0,9.148,0,7.333V0.289h2.811v6.955C2.811,8.252,3.045,9.048,3.513,9.631z"></path>
+                    <path d="M23.008,0.289h2.811v12.594h-2.811l-5.999-7.892v7.892h-2.812V0.289h2.63l6.18,8.107V0.289z"></path>
+                    <path d="M29.404,0.289h2.812v12.594h-2.812V0.289z"></path>
+                    <path d="M40.45,8.306l3.208-8.018h3.044l-5.063,12.594H39.26L34.197,0.289h3.044L40.45,8.306z"></path>
+                    <path d="M57.764,0.289v2.504h-6.27v2.595h5.639v2.396h-5.639v2.612h6.468v2.486h-9.28V0.289H57.764z"></path>
+                    <path d="M71.169,4.468c0,2.019-0.799,3.322-2.396,3.91l3.188,4.504h-3.459L65.71,8.865h-1.945v4.018h-2.812V0.289h4.776c1.957,0,3.354,0.33,4.188,0.991C70.752,1.94,71.169,3.002,71.169,4.468z M67.782,5.964c0.348-0.312,0.522-0.808,0.522-1.487c0-0.679-0.181-1.144-0.541-1.396c-0.36-0.252-0.99-0.378-1.892-0.378h-2.107v3.729h2.054C66.78,6.432,67.434,6.277,67.782,5.964z"></path>
+                    <path d="M77.485,2.802c-0.271,0.223-0.406,0.517-0.406,0.882c0,0.367,0.166,0.658,0.496,0.874c0.331,0.217,1.093,0.472,2.289,0.767c1.195,0.294,2.123,0.736,2.784,1.325c0.66,0.588,0.99,1.446,0.99,2.576c0,1.129-0.423,2.045-1.27,2.748c-0.847,0.703-1.961,1.054-3.342,1.054c-1.994,0-3.79-0.738-5.388-2.216l1.676-2.054c1.356,1.19,2.612,1.784,3.765,1.784c0.516,0,0.922-0.111,1.216-0.333c0.294-0.221,0.441-0.522,0.441-0.901c0-0.378-0.156-0.678-0.468-0.9c-0.312-0.223-0.932-0.448-1.856-0.676c-1.465-0.348-2.538-0.801-3.216-1.36c-0.678-0.559-1.018-1.435-1.018-2.631c0-1.195,0.429-2.117,1.288-2.766C76.326,0.325,77.398,0,78.684,0c0.84,0,1.682,0.145,2.522,0.432c0.84,0.288,1.574,0.697,2.198,1.226l-1.423,2.054c-1.094-0.829-2.223-1.244-3.388-1.244C78.125,2.468,77.755,2.58,77.485,2.802z"></path>
+                    <path d="M86.521,0.289h2.811v12.594h-2.811V0.289z"></path>
+                    <path d="M98.25,2.721v10.162h-2.811V2.721h-3.568V0.289h9.947v2.432H98.25z"></path>
+                    <path d="M109.781,12.883h-2.811V7.91l-4.36-7.622h3.045l2.72,4.685l2.722-4.685h3.045l-4.361,7.622V12.883z"></path>
+                    <path d="M131.817,11.144c-1.273,1.244-2.84,1.866-4.703,1.866c-1.861,0-3.429-0.622-4.702-1.866c-1.274-1.242-1.91-2.789-1.91-4.639c0-1.85,0.636-3.397,1.91-4.64C123.685,0.622,125.252,0,127.114,0c1.863,0,3.43,0.622,4.703,1.865c1.274,1.243,1.91,2.79,1.91,4.64C133.727,8.355,133.091,9.901,131.817,11.144z M130.862,6.514c0-1.124-0.359-2.082-1.081-2.874c-0.721-0.793-1.606-1.189-2.657-1.189c-1.052,0-1.937,0.396-2.657,1.189c-0.721,0.792-1.082,1.75-1.082,2.874c0,1.123,0.36,2.078,1.082,2.865c0.72,0.787,1.605,1.179,2.657,1.179c1.051,0,1.937-0.393,2.657-1.179C130.502,8.592,130.862,7.637,130.862,6.514z"></path>
+                    <path d="M145.24,0.289v2.468h-5.837v2.721h5.549v2.469h-5.549v4.937h-2.812V0.289H145.24z"></path>
+                </g>
+                </svg> <span class="uc-header-fallback" id="uc-title-universityof-fallback"> <img src="images/university-of.png" alt="University of"></span> </span> <span id="uc-title-connecticut"> <svg version="1.1" id="uc-title-connecticut-svg" class="uc-sub-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="139.551px" height="12.979px" viewBox="0 0 139.551 12.979" enable-background="new 0 0 139.551 12.979" xml:space="preserve">
+                <g>
+                    <path d="M6.505,10.34c1.374,0,2.496-0.544,3.368-1.631l1.792,1.845c-1.421,1.602-3.098,2.401-5.026,2.401
+                                    
+                                            c-1.93,0-3.519-0.608-4.767-1.828C0.624,9.908,0,8.373,0,6.514c0-1.857,0.636-3.408,1.908-4.65C3.181,0.621,4.736,0,6.577,0
+                                    
+                                            c2.054,0,3.774,0.783,5.161,2.348L9.999,4.318C9.115,3.22,8.016,2.669,6.702,2.669c-1.052,0-1.951,0.344-2.697,1.031
+                                    
+                                            c-0.748,0.688-1.12,1.612-1.12,2.777s0.352,2.101,1.057,2.805C4.647,9.986,5.501,10.34,6.505,10.34z"></path>
+                    <path d="M24.62,11.083c-1.266,1.236-2.825,1.854-4.677,1.854c-1.851,0-3.411-0.618-4.676-1.854
+                                    
+                                            c-1.267-1.237-1.9-2.773-1.9-4.614c0-1.839,0.633-3.377,1.9-4.614C16.532,0.618,18.092,0,19.943,0c1.852,0,3.412,0.618,4.677,1.855
+                                    
+                                            c1.267,1.236,1.899,2.774,1.899,4.614C26.52,8.31,25.887,9.846,24.62,11.083z M23.67,6.478c0-1.117-0.358-2.07-1.075-2.858
+                                    
+                                            c-0.717-0.789-1.598-1.183-2.643-1.183c-1.046,0-1.927,0.394-2.644,1.183c-0.716,0.788-1.075,1.741-1.075,2.858
+                                    
+                                            s0.359,2.066,1.075,2.85c0.717,0.783,1.598,1.172,2.644,1.172c1.045,0,1.926-0.389,2.643-1.172
+                                    
+                                            C23.312,8.543,23.67,7.595,23.67,6.478z"></path>
+                    <path d="M38.131,0.287h2.796v12.526h-2.796l-5.966-7.849v7.849h-2.796V0.287h2.616l6.146,8.062V0.287z"></path>
+                    <path d="M53.254,0.287h2.796v12.526h-2.796l-5.966-7.849v7.849h-2.796V0.287h2.616l6.146,8.062V0.287z"></path>
+                    <path d="M68.646,0.287v2.491h-6.235v2.58h5.608v2.384h-5.608v2.598h6.433v2.473h-9.229V0.287H68.646z"></path>
+                    <path d="M77.569,10.34c1.375,0,2.497-0.544,3.37-1.631l1.791,1.845c-1.419,1.602-3.096,2.401-5.024,2.401
+                                    
+                                            c-1.931,0-3.519-0.608-4.767-1.828c-1.249-1.219-1.873-2.755-1.873-4.614c0-1.857,0.636-3.408,1.907-4.65
+                                    
+                                            C74.246,0.621,75.802,0,77.643,0c2.054,0,3.772,0.783,5.161,2.348l-1.738,1.971c-0.885-1.099-1.983-1.649-3.297-1.649
+                                    
+                                            c-1.052,0-1.952,0.344-2.697,1.031c-0.749,0.688-1.12,1.612-1.12,2.777s0.352,2.101,1.056,2.805
+                                    
+                                            C75.712,9.986,76.565,10.34,77.569,10.34z"></path>
+                    <path d="M90.723,2.706v10.107h-2.794V2.706h-3.55V0.287h9.893v2.419H90.723z"></path>
+                    <path d="M96.796,0.287h2.796v12.526h-2.796V0.287z"></path>
+                    <path d="M108.91,10.34c1.375,0,2.497-0.544,3.37-1.631l1.791,1.845c-1.422,1.602-3.098,2.401-5.026,2.401
+                                    
+                                            s-3.519-0.608-4.768-1.828s-1.871-2.755-1.871-4.614c0-1.857,0.634-3.408,1.908-4.65C105.587,0.621,107.142,0,108.981,0
+                                    
+                                            c2.054,0,3.774,0.783,5.161,2.348l-1.738,1.971c-0.883-1.099-1.983-1.649-3.298-1.649c-1.05,0-1.95,0.344-2.694,1.031
+                                    
+                                            c-0.749,0.688-1.12,1.612-1.12,2.777s0.35,2.101,1.056,2.805C107.053,9.986,107.906,10.34,108.91,10.34z"></path>
+                    <path d="M120.072,9.578c0.467,0.58,1.093,0.869,1.882,0.869c0.789,0,1.412-0.29,1.874-0.869
+                                    
+                                            c0.459-0.579,0.688-1.371,0.688-2.374V0.287h2.796v7.007c0,1.815-0.501,3.21-1.505,4.184c-1.003,0.975-2.289,1.46-3.854,1.46
+                                    
+                                            c-1.563,0-2.851-0.49-3.862-1.47c-1.009-0.98-1.513-2.37-1.513-4.174V0.287h2.794v6.917C119.374,8.207,119.607,8.999,120.072,9.578
+                                    
+                                            z"></path>
+                    <path d="M136.004,2.706v10.107h-2.796V2.706h-3.548V0.287h9.891v2.419H136.004z"></path>
+                </g>
+                </svg> <span class="uc-header-fallback" id="uc-title-connecticut-fallback"> <img src="images/connecticut.png" alt="Connecticut"></span> </span> </a> </span>
+                        </h1>
+            <div id="uc-utility">
+                <ul id="uc-utility-list">
+                    <li class="uc-utility-item"> <span> <a href="
+                        http://uconn.edu/search.php" class="uc-utility-btn" id="uc-search"> <span id="uc-search-button"> <span id="uc-utility-btn-svg"> <svg version="1.1" id="uc-utility-btn-search-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="17.267px" height="17.033px" viewBox="0 0 17.267 17.033" enable-background="new 0 0 17.267 17.033" xml:space="preserve">
+                        <path d="M17.267,14.742l-5.323-5.324c0.441-0.857,0.695-1.828,0.695-2.859c0-3.451-2.798-6.25-6.25-6.25
+        s-6.25,2.799-6.25,6.25c0,3.453,2.798,6.25,6.25,6.25c1.213,0,2.341-0.35,3.3-0.949l5.229,5.23L17.267,14.742z M2.806,6.559
+        c0-1.979,1.604-3.582,3.583-3.582S9.973,4.58,9.973,6.559c0,1.98-1.604,3.584-3.583,3.584S2.806,8.539,2.806,6.559z"></path>
+                        </svg> </span> <span id="uc-utility-btn-fallback"> <img src="images/search-icon.png" alt="search icon"></span> </span> </a> </span> </li>
+                    <li class="uc-utility-item"> <a href="http://uconn.edu/azindex.php" class="uc-utility-btn" id="uc-utility-btn-az"> <svg version="1.1" id="uc-utility-btn-az-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="19.7px" height="8.618px" viewBox="0 0 19.7 8.618" enable-background="new 0 0 19.7 8.618" xml:space="preserve">
+                        <path d="M3.282-0.016h2.042L8.38,8.62H6.423l-0.57-1.775H2.672L2.087,8.62H0.199L3.282-0.016z M3.163,5.357h2.212
+                L4.284,1.959L3.163,5.357z"></path>
+                        <path d="M8.84,3.384h3.268v1.582H8.84V3.384z"></path>
+                        <path d="M12.864,7.096l4.418-5.582h-4.307v-1.529h6.549v1.447l-4.477,5.664h4.488V8.62h-6.672V7.096z"></path>
+                        </svg> <span id="uc-utility-btn-az-fallback">A-Z</span> </a> </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+<div>
+    <header>
+    <!--CAS--></header>
+
+<div id="content">
+        <div>
+            <div id="wrap">
+<div class="box" id="login">
+    <div id="focus">
+    <h2 id="system">NetID Single Sign On</h2>
+
+    <form method="post" id="credentials">
+
+            <label for="username"><span class="accesskey">N</span>etID</label>
+
+                <input class="textfield"
+                       id="username"
+                       size="25"
+                       tabindex="1"
+                       type="text"
+                       placeholder="NetID"
+                       accesskey="n"
+                       autocomplete="off" name="username" value=""/><label for="password"><span class="accesskey">P</span>assword</label>
+            
+                <input class="textfield"
+                       type="password"
+                       placeholder="Password"
+                       id="password"
+                       size="25"
+                       tabindex="2"
+                       accesskey="p"
+                       autocomplete="off" name="password" value=""/><span id="capslock-on" style="display:none;">
+                    <p>
+                        <i></i>
+                        <span>screen.capslock.on</span>
+                    </p>
+                </span>
+            <p id="message">On your way to... <span id="destination"></span></p>
+        <input type="hidden" name="execution" value="8589e1dc-417b-4ade-995e-59141ccd3f7b_ZXlKaGJHY2lPaUpJVXpVeE1pSjkuOTYrY1lnZWhvSy9UL1ZtNUNyeFBzd3dDdSt2bGE3ZFFydXZOSks5TVdwb1VvT3pnVG8zZ2dXL3NnS0JKY2Q2ZWJEVkY4cEtGcXo2OHdYU2xEaGJOQkRGcTd4WTVWUjJtdlNIa0kxQUdudG90TFhZZlowNVJrdVd4eXZrdXJ5Z3p6S3Y1VWhvK1ZMTmJjSk8rbXhLL3pDMXEvZnFabGlneFZxaEIzb1NvUVUwZFowZG9SN2QxelhyTm1rUUp5UzBJdjZnckVhRG5lc0VCRzBqQ1AvMlJMaHFhd3lKQS8xay9RN1Mrdi9nRGdNSWRBTUxQN0VkWGtod1V4NkwwKy95OHJkeFVjTFZtb0FJVHpXMU5FcnJsaHdVWnQ3Um1QUm5FRFVzc1N4TUtJMlphLzN1RDNPM0FaeVFRYlpTV1NKR090K3VKWlJBVE1NQWdEYjFxUS96OGRiSWJTZEZxbXJzYUtrV2RUTE9rVlc4M0grRVNRcm12SGx0VjNMWGxWajU4TTE5NzBBRHlJQk4rcUtaSUVWZ3diUUIySFJBVHdYdS8zTUd2d2ZreFZITjJwK28rdUUwNmFCb0kraTFXWGI5c1BoKzl1VSs4Q2ZuOWhmVkRkNk16OTErd3lDOXdIQm45Y3VIbkg3RStmVHl2bXZ1NFN6WWFTNDdQTTNxa2tmQmtMR3dQMXNCN0hUZGlaQnE0dGcxK3lnVzRoeGt3Nkgwbjgyd3RoNW1DVXpGWnZWNUs3UnZPZ0UrODlnL1RBOFJZclQ2UzRyUjZYTWI0QjIvUFBOS2x5TElTbTJodjk5WDVNWS9FNFZ3Y3U2UmNCdURReXJncjlUZUxGakRlMHVJMGU0SDJkSitSNldBQytiTVhPRVI2U0pFQnhMZnMwa25vSjhlOS9Pd3pLVlRQYWdzNU1ZRmxrdVRrYUVmNXZJVWY2VFpnZkUxMHhDSGVaa1UzQi9hcUU5cVNTVkVhbllBWHZhSjJPdHZiRkJIU3U2a2dSWjJheGk3eDgrcWxmMzdReXU2NDZSNVJHUjd4ekJnZkpadFh1eEpkbWtnQ3hzRXRwUnl4ZWR1WU00U2FSNFlxLzhDRDBCbkJUbUowS0ljSjIycHJNS1k5L1lxQkUyMzgySzQyS0pyMm04dnRUeXZld0Z0akJ3MVNjRXdPcmpSZm1adVExYlZMVXh5T2x5c3hreU4rWVZvREozYnVIUDZjUlg0Qi81WHdQODRGRWRjcGFlKzk3U2h4VEh2YUppakhocEF0WVcvYldxU1pJM3BpcDFpc0svK1lySHlJVHlzNEY0cGxVUXpNR0dnR3N6cnpNNWxBWVpaQjdkVEhRWnpKTE93KzltUWZXeEJGZGpkc1oxVVpTYXdEVmlwLzhxNTIzQ1pFNlo5YUFlQ0IrUmx2TDFJQXZic1JBRTJMTlZWeDU5MFhxbWFmcVh0STFYblVBeU5ENldac0ZtQ2wvUWpmc1Jac1M5Q21nemRlM0pxV3NNR0JNQjFrNUx5TlVEblVKYVoyT0RzZUxQNTloRHFoV2pBSFQ3TzFXaXpWK1lQdm9DRFduWjVKZklYOHVhZ2V4MFZuNVBHWGdXU1B2NTNFYlBCZ2Yxb0kwNFJ4aDA1eTM4ZGVzQmd1bW43Z1plQ1hMakZVK3VnM0NaVCtkQWpHNHE0TXB5bURrMTI4azFOa01MYWFQOXU3V1h1Snh4RTg1NXBsSmNKOG0wWWpNVkdYY0hvMXhkWnY4OHZLZUxnMkNXWUpnVGZkNldDcDhuWmFzcUdZc0JKM1d1eHhUa0NhWi9KQ2doRUJvemJwOGFDamVBbjQ1djE2TCtuK0QrNVozM1JnRDA3ZlZxaHA4UTZXZjc3MWZsL0lZR3RUYkJKVlJUQ3BwWFFiNmI3amdwK1d2SmZhZVY5d0JnMXBiKzk4OUZUZ2dLN1BRc3dyRG9qUWp2Z1liMkNJMHBIUWdlZnB5VjY4Sk84Wkw4YU45cUNhclZsK2hSczZKZzZqOXlzL0ZYNGxlTk0xRk4rM3pqVytSSHJqUysvNkMyOGtsLzQ1QkVLZlFIVy90VThJUG1VZkJMVWNMZEU5aXdaUkNqYWhjcEJyTDNVSXpDTURkQXpmeE1wbmlxR3kybUZHTmF2Q1pjYkRHa2hhMUp4N2dCdDNxZGQ3ZWtWeVVqQmx3ZDg5RlVCdmVnYkpyMGR2VnQ5aHl6WEc1cnBRS0IwL1FGZU1ncG5JNVRrZjFoYmJ0bXU3QkZhR3dtSlBJNHFUWldXUndPR1hSMGZkYWxjT2Jqa3Q4ZE9qV3dndHJFSlJsUXpkSGRncm50YkR4dkVRM2pwK3FoUGs4M0s1R2dwbXZQVnFpWVRKUWNkT2J3TUxmN2ZJZWlSQWVCUndKMWJxQ1BVRUFkeWU5Y2VQM0MyVU9QTjRpcUJ5ZzVhK3k1TjNSMzdGTU42U0oreEkxMzdSRHBBbmVSS3pqZmoyV0Z4eUZBc1pzd2YyejNwbFZjL1BmQU1pZ01iM0laWTRxSW9iNHRlUW92WXZtNGdFd3hUVGNJZEsyWkVhb1NueGQ0UmR2QWVqL3FqUTlaWldobWlYc3kyVzZZTDArS0t5Z1RUTC9KRkN3dU9hWG4yWjgxSE1sY0RYSDdBNXVza2U3MmRYZGlEdVFNdy9MMlhERkRqYWh6QTBUQm56dmFVWWplTVRnakdsU2F0WEp2RjFTekVvQ1BJMW1CWlhsUGxWbldxQU5QdnpoQy95SGsrVjR4dTl0eFB2dG5hTDRKOSszaUJvb0xuT3RYS0pKWWxEVVE2UWpLYnljUVVSWGI1OU13eDE0d2lCVlcwaFkrUGxrMmtCVnU0ZHJWWjJLVGtDWTdaYXBnb0ZtajBhcXZGdVhyYjdCdndBWWJEOUF1RjRLTlljbU13bzMwWkVlck5wNXc4ZHRzWlVnQ0xVQkxrekpJcnlGSVFJYlNLOU40REQxT1RLUTV4WXYzaURRUk5wbG1Pc0RaMFBrWlQvbHgyQXg5NDVZM3BET0tBdUtLRjdBb1hEbnQ0YTVydXlMdXN4WjkvOEh1c3kwR3NybUt4NWJPbEg5OXhhUWdpcUI1WXdReHI3TjRJblBRcEJVUCsvdzBHSVVNRHU2TEZVNTlhU1h2MVo4OExUcUorTGhONDZjL0sxN29qUE5ZcHJYMUxNdjVnbFowTU9aeTdvVjJPQXM0ZHpjdjg5SkVHTUNjUG9LSXUweWsydXlJOGVybVVEUUxRTVA2dGZoWm9ZYW9tOWZ5d1VHclZIQ0VnS0hKVHQzNDFQWGxBalRSTVVUejdFUTNPVmJ0WVVYbkJTbWlndzVOU0luQ0hUOXE2UHFzV05WdnNhUUJFejhsYXFsdGVld2lNOFpKQ2t4d1VaN2h1UDVuTTRtdlpLUWN6MjJYd3RQM28veVkyT3krTmZWQzhBdWdydTQwUXVqbVVTVUVYVEF4NFR0Zmp3YjZCL3pjT2g5OEc2N3JYaG9Gbi84ZEFxc1p5d1Fld09TUEl0alJuY0d2bEdFZUt4RU5YN2V2SmVRcXV5cllwQ0Q4K1NDNDRPMmQ3dlBYMlcwQkdadkhRV09WSFA2RUg5ckp6M0VRZDZpcEdzN0lhU3liRmZBQk80a29sdS9TZ2VTWkJQU3V5WnVuaDI5akdtMnNhOVBkbGhYeUZZZ0J2Y21pRHhaUHdBdTdsRlRTZ241RnhCbW9TY2JIRXVYYWIxYkNiTHJRd2ZZWkJvbkJpcUhoajdLNGNOV0kzWmI5Y0pSV2pMZnJBQlkxV1hUbjJTYndXT3h2cDFmZm9NN3lkNms1U0c5SWRaTjIwOERJRnV3RlRNb1ZNNkc4MTFFTGc2RTRTcHI1bjdMbTIrdWJZTXhWOG1OS2VPWHVmbkdTOEdWOWRMdTNUSHdzbmVndkxqR0x1ZXlMbkFaSkJRVHFzMS5IU19HVndwNl9mWGJEdFU4QkpKZ3lnX3VpRlBPWjBWU2xqRTJLbzJhdjNlejgySVVobHJkMzFfc01kZTlwbEdUaGx1VC1vbUVyUllqSmFlTmtRaDVuZw=="/><input type="hidden" name="_eventId" value="submit"/><input type="hidden" name="geolocation"/><input
+                   id="button"
+                   name="submit"
+                   accesskey="l"
+                   value="Login"
+                   tabindex="6"
+                   type="submit"/><p id="slogan"><strong>UConn Single Sign On</strong> serves as your login to many University computing and networking services.</p>
+    </form>
+
+    <p id="help"><a href="https://netid.uconn.edu/reset_password.php">Forgot password?</a></p>
+
+
+<script>
+    var uri = encodeURIComponent(window.location.href);
+        uri = uri.split("%3F");
+        if (uri[1])
+        {
+                uri = (((((((uri[1]).replace('service%3D','')).replace('http%253A%252F%252F','')).replace('https%253A%252F%252F','')).replace('TARGET%3D','')).replace('https%253a%252f%252f','')).replace('http%253a%252f%252f','')).replace('https%3a%2f%2f','');
+                uri = (uri.split("%252F"))[0];
+                uri = (uri.split("%252"))[0];
+        }
+        else
+        {
+                uri = (uri[0].replace('https%3A%2F%2F','')).replace('%2Fcas%2Flogin','');
+        uri = (uri.split("%3B"))[0];
+        }
+        document.getElementById('destination').innerHTML = uri;
+</script>
+</div>
+</div>
+</div>
+</div>
+    </div>
+    <div id="uc-footer">
+    <ul>
+        <li><a href="http://uconn.edu">&copy; University of Connecticut</a></li>
+        <li><a href="http://uconn.edu/disclaimers-and-copyrights.php">Disclaimers, Privacy &amp; Copyright</a> </li>
+        <li><a href="http://uits.uconn.edu/?page_id=943">Help</a> </li>
+    </ul>
+</div>
+<script type="text/javascript" src="js/modernizr.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
+</div>
+<div><script src="/cas/webjars/headjs/1.0.3/head.min.js"></script>
+<script type="text/javascript" src="/cas/js/cas.js"></script>
+
+<script>
+head.ready(document, function () {
+    if (!window.jQuery) {
+        var jqueryUrl = "\/cas\/webjars\/jquery\/3.3.1\/dist\/jquery.min.js"; 
+        head.load(jqueryUrl, loadjQueryUI);
+    } else {
+        resourceLoadedSuccessfully();
+    }
+});
+function loadjQueryUI() {
+    var jqueryUrl = "\/cas\/webjars\/jquery-ui\/1.12.1\/jquery-ui.min.js"; 
+    head.load(jqueryUrl, loadjQueryCookies);
+}
+function loadjQueryCookies() {
+    var jqueryUrl = "\/cas\/webjars\/jquery-cookie\/1.4.1-1\/jquery.cookie.js"; 
+    head.load(jqueryUrl, resourceLoadedSuccessfully);
+}
+</script>
+</div>
+
+</body>
+</html>
